@@ -33,6 +33,10 @@
 
     </style>
 
+    <style name="text_apperance.shadowed.movie_title.small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="text_apperance.storyline" >
 
     </style>
@@ -53,8 +57,16 @@
         <item name="android:textColor">@color/tag_text_color</item>
     </style>
 
+    <style name="text_apperance.tag.small">
+        <item name="android:textSize">8sp</item>
+    </style>
+
     <style name="text_apperance.reviews">
         <item name="android:textColor">@color/reviews_text_color</item>
+    </style>
+
+    <style name="text_apperance.reviews.small">
+        <item name="android:textSize">8sp</item>
     </style>
 
     <style name="RatingBar" parent="Theme.MaterialComponents">
