@@ -19,7 +19,7 @@
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/orig"
+            app:srcCompat="@drawable/movie_avangers_end_game_detail"
             tools:contentDescription="@string/movie_title"/>
 
         <View
@@ -194,6 +194,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/storyline_barrier_bottom" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_actors_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cast_header"
+            tools:itemCount="4"
+            tools:listitem="@layout/view_holder_actor" />
+        <!--
         <ImageView
             android:id="@+id/iv_pic1"
             android:layout_width="@dimen/picture_width"
@@ -305,7 +322,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_pic3"
             app:layout_constraintTop_toBottomOf="@+id/actors_barrier_bottom" />
-
+-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

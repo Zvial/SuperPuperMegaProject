@@ -1,7 +1,6 @@
 package com.example.superpupermegaproject
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 
@@ -21,8 +22,8 @@ class MovieDetailsFragment : Fragment() {
         arguments?.let {
             it.getLong(ARG_ID)?.let { _id ->
                 movie = MoviesDataSource.moviesList.first { _movie ->
-                        _movie.id == _id
-                        }
+                    _movie.id == _id
+                }
             }
         }
     }
@@ -53,28 +54,36 @@ class MovieDetailsFragment : Fragment() {
         val tvReviewersCount = view.findViewById<TextView>(R.id.tv_reviewers_count)
         val tvMovieName = view.findViewById<TextView>(R.id.tv_movie_name)
         val tvLengthOfMovie = view.findViewById<TextView>(R.id.tv_length_of_movie)
+        val rvActorsList = view.findViewById<RecyclerView>(R.id.rv_actors_list)
 
-        if (movie != null) {
+        movie?.apply {
             ivMovieImage?.let {
                 Glide.with(view.context)
-                    .load(movie!!.imageID)
+                    .load(this.detailImageID)
                     .into(it)
+                // it.setTint(R.color.cast_text_color)
             }
 
-            tvAgeLimit?.setText(movie!!.ageLimitString)
-            tvTagline?.setText(movie!!.tagsString)
-            rbRating?.rating = movie!!.rating.toFloat()
+            tvAgeLimit?.setText(this.ageLimitString)
+            tvTagline?.setText(this.tagsString)
+            rbRating?.rating = this.rating.toFloat()
             rbRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
-                    movie?.let {
-                        MoviesDataSource.setRating(it.id, rating)
-                    }
+                    MoviesDataSource.setRating(this.id, rating)
                 }
             }
             ivLike?.setImageResource(R.drawable.unlike)
-            tvReviewersCount?.setText(movie!!.reviewersCountString)
-            tvMovieName?.setText(movie!!.name)
-            tvLengthOfMovie?.setText(movie!!.lengthOfMovieString)
+            tvReviewersCount?.setText(this.reviewersCountString)
+            tvMovieName?.setText(this.name)
+            tvLengthOfMovie?.setText(this.lengthOfMovieString)
+
+            val actorsAdapter = ActorsListAdapter()
+            actorsAdapter.submitList(this.actors)
+
+            rvActorsList?.let {
+                it.adapter = actorsAdapter
+                it.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            }
         }
     }
 

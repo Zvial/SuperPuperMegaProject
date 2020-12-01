@@ -8,7 +8,8 @@ data class Movie(
     val storyline: String,
     val actors: List<Actor>,
     val ageLimit: Int,
-    val imageID: Int,
+    val listImageID: Int,
+    val detailImageID: Int = listImageID,
     val lengthOfMovie: Int,
     var isLiked: Boolean = false,
     var rating: Float = 0F

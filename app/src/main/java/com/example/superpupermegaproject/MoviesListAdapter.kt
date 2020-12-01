@@ -1,14 +1,11 @@
 package com.example.superpupermegaproject
 
-import android.content.res.ColorStateList
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -54,7 +51,7 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
 
             ivMovieImage?.let {
                 Glide.with(itemView.context)
-                .load(movie.imageID)
+                .load(movie.listImageID)
                 .into(it)
             }
 

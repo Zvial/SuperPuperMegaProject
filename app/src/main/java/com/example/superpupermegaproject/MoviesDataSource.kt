@@ -10,7 +10,8 @@ object MoviesDataSource {
             reviewersCount = 125,
             storyline = "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
             ageLimit = 13,
-            imageID = R.drawable.movie_avangers_end_game,
+            listImageID = R.drawable.movie_avangers_end_game,
+            detailImageID = R.drawable.movie_avangers_end_game_detail,
             rating = 4f,
             actors = getDefaultActors(),
             lengthOfMovie = 137
@@ -23,7 +24,7 @@ object MoviesDataSource {
             reviewersCount = 98,
             storyline = "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
             ageLimit = 16,
-            imageID = R.drawable.movie_tenet,
+            listImageID = R.drawable.movie_tenet,
             rating = 5f,
             actors = getDefaultActors(),
             isLiked = true,
@@ -37,7 +38,7 @@ object MoviesDataSource {
             reviewersCount = 38,
             storyline = "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
             ageLimit = 13,
-            imageID = R.drawable.movie_black_widow,
+            listImageID = R.drawable.movie_black_widow,
             rating = 4f,
             actors = getDefaultActors(),
             lengthOfMovie = 102
@@ -50,7 +51,7 @@ object MoviesDataSource {
             reviewersCount = 74,
             storyline = "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
             ageLimit = 13,
-            imageID = R.drawable.movie_wonder_woman,
+            listImageID = R.drawable.movie_wonder_woman,
             rating = 5f,
             actors = getDefaultActors(),
             lengthOfMovie = 120
