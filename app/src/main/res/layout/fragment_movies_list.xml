@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
 
-    tools:context=".MoviesListFragment">
+    tools:context=".ui.MoviesListFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_caption"

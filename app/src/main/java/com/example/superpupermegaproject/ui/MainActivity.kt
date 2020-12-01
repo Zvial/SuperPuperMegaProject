@@ -1,8 +1,9 @@
-package com.example.superpupermegaproject
+package com.example.superpupermegaproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.superpupermegaproject.R
 
 class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
     private val fragmentContainerID = R.id.fragment_frame

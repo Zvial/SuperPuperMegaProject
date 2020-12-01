@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject
+package com.example.superpupermegaproject.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.superpupermegaproject.adapters.ActorsListAdapter
+import com.example.superpupermegaproject.model.Movie
+import com.example.superpupermegaproject.model.MoviesDataSource
+import com.example.superpupermegaproject.R
 
 
 class MovieDetailsFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject
+package com.example.superpupermegaproject.extensions
 
 import android.content.res.ColorStateList
 import android.widget.ImageView

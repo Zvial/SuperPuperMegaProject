@@ -1,4 +1,6 @@
-package com.example.superpupermegaproject
+package com.example.superpupermegaproject.model
+
+import com.example.superpupermegaproject.R
 
 data class Movie(
     val id: Long,
