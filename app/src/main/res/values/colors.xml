@@ -13,6 +13,7 @@
     <color name="gradient_end">#FF191926</color>
     <color name="shadow_color">#80000000</color>
     <color name="tag_text_color">#FFFF3466</color>
+    <color name="liked_tint_color">#FFFF3466</color>
     <color name="reviews_text_color">#FF6D6D80</color>
     <color name="cast_text_color">#FFD8D8D8</color>
     <color name="card_border">#FF636375</color>

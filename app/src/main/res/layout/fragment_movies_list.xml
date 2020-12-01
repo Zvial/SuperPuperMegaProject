@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+
+    tools:context=".MoviesListFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_44" />
+
+    <ImageView
+        android:id="@+id/iv_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:src="@drawable/target"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_caption"
+        app:layout_constraintEnd_toStartOf="@id/tv_caption"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_caption" />
+
+    <TextView
+        android:id="@+id/tv_caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:text="@string/list_title"
+        android:textAppearance="@style/text_apperance"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_caption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_target"
+        app:layout_constraintTop_toBottomOf="@id/guideline_caption" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:barrierMargin="@dimen/margin_16"
+        app:constraint_referenced_ids="iv_target, tv_caption" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_movies_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
+        tools:listitem="@layout/view_holder_movie" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

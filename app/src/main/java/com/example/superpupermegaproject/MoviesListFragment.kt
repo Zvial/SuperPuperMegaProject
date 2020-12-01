@@ -6,21 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.card.MaterialCardView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 class MoviesListFragment : Fragment() {
-    private var onSelectListener: OnSelectMovieItem? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var onClickListener: OnClickListItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movies_list_cardview, container, false)
+        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
         return view
     }
@@ -28,24 +25,29 @@ class MoviesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cardView = view.findViewById<MaterialCardView>(R.id.cardview)
-        cardView?.setOnClickListener {
-            onSelectListener?.onSelect(1)
+        val adapter = MoviesListAdapter().apply {
+            this.onClickListener = this@MoviesListFragment.onClickListener
+            this.updateMovieList(MoviesDataSource.moviesList)
+        }
+
+        view.findViewById<RecyclerView>(R.id.rv_movies_list)?.apply {
+            this.adapter = adapter
+            this.layoutManager = GridLayoutManager(view.context, 2, RecyclerView.VERTICAL, false)
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is OnSelectMovieItem) {
-            onSelectListener = context
+        if (context is OnClickListItem) {
+            onClickListener = context
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        onSelectListener = null
+        onClickListener = null
     }
 
     companion object {
@@ -54,7 +56,7 @@ class MoviesListFragment : Fragment() {
             MoviesListFragment()
     }
 
-    interface OnSelectMovieItem {
-        fun onSelect(id: Int)
+    interface OnClickListItem {
+        fun onClickItem(itemID: Long)
     }
 }

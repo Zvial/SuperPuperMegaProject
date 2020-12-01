@@ -11,25 +11,25 @@
         android:background="@color/background">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_movie_image"
             android:layout_width="match_parent"
             android:layout_height="331dp"
-            android:scaleType="centerCrop"
+            android:scaleType="matrix"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/orig"
-            android:contentDescription="@string/movie_title"/>
+            tools:contentDescription="@string/movie_title"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:alpha="1"
             android:background="@drawable/gradient"
-            app:layout_constraintBottom_toBottomOf="@id/imageView"
-            app:layout_constraintEnd_toEndOf="@id/imageView"
-            app:layout_constraintStart_toStartOf="@id/imageView" />
+            app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
+            app:layout_constraintEnd_toEndOf="@id/iv_movie_image"
+            app:layout_constraintStart_toStartOf="@id/iv_movie_image" />
 
         <TextView
             android:id="@+id/tv_back"
@@ -54,7 +54,7 @@
             app:layout_constraintGuide_begin="254dp" />
 
         <TextView
-            android:id="@+id/tv_age"
+            android:id="@+id/tv_age_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
@@ -67,7 +67,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tv_movie_title"
+            android:id="@+id/tv_movie_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tv_movie_title, imageView"
+            app:constraint_referenced_ids="tv_movie_name, iv_movie_image"
             tools:layout_editor_absoluteY="331dp" />
 
         <TextView
@@ -105,8 +105,9 @@
             app:layout_constraintTop_toBottomOf="@+id/movie_title_barrier_bottom" />
 
         <RatingBar
-            android:id="@+id/rating"
+            android:id="@+id/rb_rating"
             style="?android:attr/ratingBarStyleSmall"
+            android:isIndicator="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
@@ -119,7 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_tagline" />
 
         <TextView
-            android:id="@+id/tv_reviews"
+            android:id="@+id/tv_reviewers_count"
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
@@ -130,7 +131,7 @@
             android:text="@string/reviews_count"
             android:textAppearance="@style/text_apperance.reviews"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rating"
+            app:layout_constraintStart_toEndOf="@+id/rb_rating"
             app:layout_constraintTop_toBottomOf="@+id/tv_tagline" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -138,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="rating, tv_reviews"
+            app:constraint_referenced_ids="rb_rating, tv_reviewers_count"
             tools:layout_editor_absoluteY="331dp" />
 
         <TextView

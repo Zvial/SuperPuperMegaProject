@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
-class MainActivity : AppCompatActivity(), MoviesListFragment.OnSelectMovieItem {
+class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
     private val fragmentContainerID = R.id.fragment_frame
     private var activityIsDestroying = false
 
@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnSelectMovieItem {
         activityIsDestroying = true
     }
 
-    override fun onSelect(id: Int) {
-        setFragment(MovieDetailsFragment.newInstance(id), true)
+    override fun onClickItem(itemID: Long) {
+        setFragment(MovieDetailsFragment.newInstance(itemID), true)
     }
 
     private fun setFragment(fragment: Fragment, addToBackStack: Boolean) {
