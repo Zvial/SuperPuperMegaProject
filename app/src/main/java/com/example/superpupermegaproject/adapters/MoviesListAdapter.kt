@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.superpupermegaproject.R
@@ -16,13 +17,13 @@ import com.example.superpupermegaproject.ui.MoviesListFragment
 
 class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>() {
 
-    private val moviesList = mutableListOf<Movie>()
+    val moviesList = mutableListOf<Movie>()
     var onClickListener: MoviesListFragment.OnClickListItem? = null
 
     fun updateMovieList(list: List<Movie>) {
         moviesList.clear()
         moviesList.addAll(list)
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -67,7 +68,7 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
             rbRating?.rating = movie.rating
             rbRating?.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
-                    movie?.let {
+                    movie.let {
                         MoviesDataSource.setRating(it.id, rating)
                     }
                 }
@@ -96,5 +97,21 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
 
             ivLike?.setTint(colorResourceID)
         }
+    }
+
+    class MoviesDiffUtilCallback(
+            private val oldList: List<Movie>,
+            private val newList: List<Movie>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition].id == newList[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldList[oldItemPosition] == newList[newItemPosition]
+
     }
 }

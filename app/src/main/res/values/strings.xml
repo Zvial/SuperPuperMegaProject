@@ -12,4 +12,6 @@
     <string name="list_title">Movies list</string>
     <string name="age_13">13+</string>
     <string name="duration">137 MIN</string>
+    <string name="text_movie">Movie</string>
+    <string name="text_">-</string>
 </resources>

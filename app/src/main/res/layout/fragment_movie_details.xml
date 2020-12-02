@@ -14,13 +14,14 @@
             android:id="@+id/iv_movie_image"
             android:layout_width="match_parent"
             android:layout_height="331dp"
-            android:scaleType="matrix"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/movie_avangers_end_game_detail"
-            tools:contentDescription="@string/movie_title"/>
+            tools:contentDescription="@string/movie_title"
+            android:contentDescription="@string/text_movie"
+            tools:src="@drawable/movie_avangers_end_game_detail" />
 
         <View
             android:layout_width="match_parent"
@@ -33,10 +34,10 @@
 
         <TextView
             android:id="@+id/tv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/margin_48"
+            android:layout_height="@dimen/margin_48"
             android:layout_marginStart="@dimen/margin_16"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="8dp"
             android:alpha="0.75"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -59,12 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_12"
-            android:text="@string/age_13"
             android:textAppearance="@style/text_apperance"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/movie_title_guideline"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/age_13" />
 
         <TextView
             android:id="@+id/tv_movie_name"
@@ -75,11 +76,11 @@
             android:alpha="0.75"
             android:gravity="center_vertical"
             android:lineSpacingExtra="0sp"
-            android:text="@string/movie_title"
             android:textAppearance="@style/text_apperance.shadowed.movie_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_title_guideline" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_guideline"
+            tools:text="@string/movie_title" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/movie_title_barrier_bottom"
@@ -98,26 +99,26 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:alpha="0.75"
             android:gravity="start|center_vertical"
-            android:text="@string/tag"
             android:textAppearance="@style/text_apperance.tag"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_title_barrier_bottom" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_barrier_bottom"
+            tools:text="@string/tag" />
 
         <RatingBar
             android:id="@+id/rb_rating"
             style="?android:attr/ratingBarStyleSmall"
-            android:isIndicator="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="4dp"
+            android:isIndicator="false"
             android:numStars="5"
             android:progressBackgroundTint="@color/reviews_text_color"
             android:progressTint="@color/tag_text_color"
-            android:rating="4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tagline" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tagline"
+            tools:rating="4" />
 
         <TextView
             android:id="@+id/tv_reviewers_count"
@@ -128,11 +129,11 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:alpha="0.75"
             android:gravity="center_vertical"
-            android:text="@string/reviews_count"
             android:textAppearance="@style/text_apperance.reviews"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rb_rating"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tagline" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tagline"
+            tools:text="@string/reviews_count" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/rating_barrier_bottom"
@@ -165,11 +166,11 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="@dimen/margin_16"
             android:alpha="0.75"
-            android:text="@string/storyline"
             android:textAppearance="@style/text_apperance.storyline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_storyline_header" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_storyline_header"
+            tools:text="@string/storyline" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/storyline_barrier_bottom"
@@ -210,119 +211,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_cast_header"
             tools:itemCount="4"
             tools:listitem="@layout/view_holder_actor" />
-        <!--
-        <ImageView
-            android:id="@+id/iv_pic1"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/picture_height"
-            android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintEnd_toStartOf="@+id/iv_pic2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-            app:srcCompat="@drawable/robert_downy_jr"
-            />
-
-        <ImageView
-            android:id="@+id/iv_pic2"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/picture_height"
-            android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintEnd_toStartOf="@+id/iv_pic3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iv_pic1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-            app:srcCompat="@drawable/chris_evans"
-            tools:layout_editor_absoluteY="500dp" />
-
-        <ImageView
-            android:id="@+id/iv_pic3"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/picture_height"
-            android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintEnd_toStartOf="@+id/iv_pic4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iv_pic2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-            app:srcCompat="@drawable/mark_ruffalo"
-            tools:layout_editor_absoluteY="500dp" />
-
-        <ImageView
-            android:id="@+id/iv_pic4"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/picture_height"
-            android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iv_pic3"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-            app:srcCompat="@drawable/chris_hemsworth"
-            tools:layout_editor_absoluteY="500dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/actors_barrier_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="top"
-            app:constraint_referenced_ids="iv_pic4, iv_pic3, iv_pic2, iv_pic1"
-            tools:layout_editor_absoluteY="331dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/actors_barrier_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="iv_pic4, iv_pic3, iv_pic2, iv_pic1"
-            tools:layout_editor_absoluteY="331dp" />
-
-        <TextView
-            android:id="@+id/tv_pic1"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/cast_name_height"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:text="Robert Downey Jr."
-            android:textAppearance="@style/text_apperance.cast_name"
-            app:layout_constraintEnd_toStartOf="@id/tv_pic2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/actors_barrier_bottom" />
-
-        <TextView
-            android:id="@+id/tv_pic2"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/cast_name_height"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:text="Chris Evans"
-            android:textAppearance="@style/text_apperance.cast_name"
-            app:layout_constraintEnd_toStartOf="@id/tv_pic3"
-            app:layout_constraintStart_toEndOf="@id/tv_pic1"
-            app:layout_constraintTop_toBottomOf="@+id/actors_barrier_bottom" />
-
-        <TextView
-            android:id="@+id/tv_pic3"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/cast_name_height"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:text="Chris Evans"
-            android:textAppearance="@style/text_apperance.cast_name"
-            app:layout_constraintEnd_toStartOf="@id/tv_pic4"
-            app:layout_constraintStart_toEndOf="@id/tv_pic2"
-            app:layout_constraintTop_toBottomOf="@+id/actors_barrier_bottom" />
-
-        <TextView
-            android:id="@+id/tv_pic4"
-            android:layout_width="@dimen/picture_width"
-            android:layout_height="@dimen/cast_name_height"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:text="Chris Evans"
-            android:textAppearance="@style/text_apperance.cast_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_pic3"
-            app:layout_constraintTop_toBottomOf="@+id/actors_barrier_bottom" />
--->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

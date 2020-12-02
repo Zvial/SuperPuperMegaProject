@@ -24,10 +24,8 @@ class MovieDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            it.getLong(ARG_ID)?.let { _id ->
-                movie = MoviesDataSource.moviesList.first { _movie ->
-                    _movie.id == _id
-                }
+            it.getLong(ARG_ID).let { _id ->
+                movie = MoviesDataSource.getMovieByID(_id)
             }
         }
     }
@@ -57,7 +55,7 @@ class MovieDetailsFragment : Fragment() {
         val rbRating = view.findViewById<RatingBar>(R.id.rb_rating)
         val tvReviewersCount = view.findViewById<TextView>(R.id.tv_reviewers_count)
         val tvMovieName = view.findViewById<TextView>(R.id.tv_movie_name)
-        val tvLengthOfMovie = view.findViewById<TextView>(R.id.tv_length_of_movie)
+        val tvStoryLine = view.findViewById<TextView>(R.id.tv_storyline)
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rv_actors_list)
 
         movie?.apply {
@@ -70,7 +68,7 @@ class MovieDetailsFragment : Fragment() {
 
             tvAgeLimit?.setText(this.ageLimitString)
             tvTagline?.setText(this.tagsString)
-            rbRating?.rating = this.rating.toFloat()
+            rbRating?.rating = this.rating
             rbRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
                     MoviesDataSource.setRating(this.id, rating)
@@ -79,7 +77,7 @@ class MovieDetailsFragment : Fragment() {
             ivLike?.setImageResource(R.drawable.unlike)
             tvReviewersCount?.setText(this.reviewersCountString)
             tvMovieName?.setText(this.name)
-            tvLengthOfMovie?.setText(this.lengthOfMovieString)
+            tvStoryLine?.setText(this.storyline)
 
             val actorsAdapter = ActorsListAdapter()
             actorsAdapter.submitList(this.actors)
