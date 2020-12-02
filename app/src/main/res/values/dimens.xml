@@ -15,6 +15,7 @@
 
     <!--> Фрагмент со списком <-->
     <dimen name="age_view_size">24dp</dimen>
+    <dimen name="like_view_size">36dp</dimen>
     <dimen name="age_view_corners_radius">4dp</dimen>
     <dimen name="margin_4">4dp</dimen>
 
