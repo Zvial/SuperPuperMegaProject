@@ -158,27 +158,33 @@
         <TextView
             android:id="@+id/tv_movie_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_height="0dp"
             android:textAppearance="@style/text_apperance.shadowed.movie_title.small"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/barrier_image_bottom"
+            app:layout_constraintBottom_toTopOf="@id/barrier_length_of_movie"
             tools:text="@string/movie_title" />
-
 
         <TextView
             android:id="@+id/tv_length_of_movie"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_4"
             android:alpha="0.75"
             android:gravity="center_vertical"
             android:textAppearance="@style/text_apperance.reviews.small"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/tv_movie_name"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/duration" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_length_of_movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="tv_length_of_movie"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

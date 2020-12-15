@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.android.academy.fundamentals.homework.features.data.Movie
 import com.example.superpupermegaproject.adapters.ActorsListAdapter
-import com.example.superpupermegaproject.model.Movie
-import com.example.superpupermegaproject.model.MoviesDataSource
+import com.example.superpupermegaproject.data.MoviesDataSource
 import com.example.superpupermegaproject.R
+import com.example.superpupermegaproject.extensions.setImage
 
 
 class MovieDetailsFragment : Fragment() {
@@ -59,25 +59,23 @@ class MovieDetailsFragment : Fragment() {
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rv_actors_list)
 
         movie?.apply {
-            ivMovieImage?.let {
-                Glide.with(view.context)
-                    .load(this.detailImageID)
-                    .into(it)
-                // it.setTint(R.color.cast_text_color)
-            }
+            ivMovieImage?.setImage(this.backdrop)
 
             tvAgeLimit?.setText(this.ageLimitString)
-            tvTagline?.setText(this.tagsString)
-            rbRating?.rating = this.rating
+            tvTagline?.setText(this.genresString)
+            rbRating?.rating = this.voteRating
             rbRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
                     MoviesDataSource.setRating(this.id, rating)
                 }
             }
             ivLike?.setImageResource(R.drawable.unlike)
-            tvReviewersCount?.setText(this.reviewersCountString)
-            tvMovieName?.setText(this.name)
-            tvStoryLine?.setText(this.storyline)
+            tvReviewersCount?.setText(this.voteCountString)
+            tvMovieName?.setText(this.title)
+            tvStoryLine?.setText(this.overview)
+
+            view.findViewById<TextView>(R.id.tv_cast_header)?.visibility =
+                if(this.actors.isEmpty()) View.GONE else View.VISIBLE
 
             val actorsAdapter = ActorsListAdapter()
             actorsAdapter.submitList(this.actors)

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
         activityIsDestroying = true
     }
 
-    override fun onClickItem(itemID: Long) {
+    override fun onClickItem(itemID: Long, position: Int) {
         setFragment(MovieDetailsFragment.newInstance(itemID), true)
     }
 

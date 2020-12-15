@@ -8,11 +8,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.android.academy.fundamentals.homework.features.data.Movie
 import com.example.superpupermegaproject.R
+import com.example.superpupermegaproject.extensions.setImage
 import com.example.superpupermegaproject.extensions.setTint
-import com.example.superpupermegaproject.model.Movie
-import com.example.superpupermegaproject.model.MoviesDataSource
+import com.example.superpupermegaproject.data.MoviesDataSource
 import com.example.superpupermegaproject.ui.MoviesListFragment
 
 class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>() {
@@ -33,7 +33,7 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(moviesList[position])
         onClickListener?.let {listener ->
-            holder.itemView.setOnClickListener { listener.onClickItem(moviesList[position].id) }
+            holder.itemView.setOnClickListener { listener.onClickItem(moviesList[position].id, position) }
         }
     }
 
@@ -55,17 +55,13 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
         fun bind(movie: Movie) {
             isLiked = movie.isLiked
 
-            ivMovieImage?.let {
-                Glide.with(itemView.context)
-                .load(movie.listImageID)
-                .into(it)
-            }
+            ivMovieImage?.setImage(movie.poster)
 
 
             tvAgeLimit?.setText(movie.ageLimitString)
-            tvTagline?.setText(movie.tagsString)
+            tvTagline?.setText(movie.genresString)
 
-            rbRating?.rating = movie.rating
+            rbRating?.rating = movie.voteRating
             rbRating?.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
                     movie.let {
@@ -82,9 +78,9 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
                 manageLikedView()
             }
 
-            tvReviewersCount?.setText(movie.reviewersCountString)
-            tvMovieName?.setText(movie.name)
-            tvLengthOfMovie?.setText(movie.lengthOfMovieString)
+            tvReviewersCount?.setText(movie.voteCountString)
+            tvMovieName?.setText(movie.title)
+            tvLengthOfMovie?.setText(movie.runtimeString)
         }
 
         private fun manageLikedView() {

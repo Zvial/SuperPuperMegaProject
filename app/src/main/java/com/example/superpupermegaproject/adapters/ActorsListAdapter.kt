@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.android.academy.fundamentals.homework.features.data.Actor
 import com.example.superpupermegaproject.R
-import com.example.superpupermegaproject.model.Actor
+import com.example.superpupermegaproject.extensions.setImage
+
 
 class ActorsListAdapter :
     ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(ActorsDiffUtilCallback()) {
@@ -33,11 +34,7 @@ class ActorsListAdapter :
         private val tvActorName = itemView.findViewById<TextView>(R.id.tv_actor_name)
 
         fun bind(actor: Actor) {
-            ivActorImage?.let {
-                Glide.with(itemView.context)
-                    .load(actor.imageID)
-                    .into(it)
-            }
+            ivActorImage?.setImage(actor.picture)
 
             tvActorName.setText(actor.name)
         }
