@@ -1,19 +1,19 @@
 package com.example.superpupermegaproject.ui
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.academy.fundamentals.homework.features.data.loadMovies
-import com.example.superpupermegaproject.data.MoviesDataSource
+import com.android.academy.fundamentals.homework.features.data.Movie
 import com.example.superpupermegaproject.adapters.MoviesListAdapter
 import com.example.superpupermegaproject.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.*
 
 
@@ -22,11 +22,14 @@ class MoviesListFragment : Fragment() {
     private var rvMoviesList: RecyclerView? = null
     private var fragmentScope = CoroutineScope(Dispatchers.Main)
     private var scrollToPosition = 0
+    private lateinit var viewModel: MoviesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this, ViewModelFactory(context?.applicationContext as Application)).get(MoviesListViewModel::class.java)
+
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
         rvMoviesList = view.findViewById<RecyclerView>(R.id.rv_movies_list)?.apply {
@@ -37,13 +40,6 @@ class MoviesListFragment : Fragment() {
         }
 
         scrollToPosition = savedInstanceState?.getInt(ARG_POS_NUMBER, 0) ?: 0
-
-        view.findViewById<FloatingActionButton>(R.id.fab_mix_list)?.apply {
-            setOnClickListener {
-                MoviesDataSource.shuffleList()
-                updateRecyclerViewList()
-            }
-        }
 
         return view
     }
@@ -62,7 +58,13 @@ class MoviesListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        updateRecyclerViewList(scrollToPosition)
+        fragmentScope.launch {
+            viewModel.loadMovies()
+
+            viewModel.moviesObservable.observe(viewLifecycleOwner) {
+                updateRecyclerViewList(it, scrollToPosition)
+            }
+        }
     }
 
     override fun onDetach() {
@@ -71,18 +73,14 @@ class MoviesListFragment : Fragment() {
         onClickListener = null
     }
 
-    private fun updateRecyclerViewList(scrollTo: Int = 0) {
+    private fun updateRecyclerViewList(movies: List<Movie>, scrollTo: Int = 0) {
          fragmentScope.launch {
-            MoviesDataSource.moviesList = async {
-                loadMovies(view!!.context)
-            }.await()
-
             rvMoviesList?.let {_rvMoviesList ->
                 with(_rvMoviesList.adapter as MoviesListAdapter) {
-                    val duCallback = MoviesListAdapter.MoviesDiffUtilCallback(this.moviesList, MoviesDataSource.moviesList)
+                    val duCallback = MoviesListAdapter.MoviesDiffUtilCallback(this.moviesList, movies)
                     val diff = DiffUtil.calculateDiff(duCallback, true)
                     diff.dispatchUpdatesTo(this)
-                    this.updateMovieList(MoviesDataSource.moviesList)
+                    this.updateMovieList(movies)
                 }
 
                 _rvMoviesList.layoutManager?.scrollToPosition(scrollTo)
