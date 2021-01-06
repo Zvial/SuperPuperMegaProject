@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.SuperPuperMegaProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryVariant">@color/background</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/card_border</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -33,6 +33,10 @@
 
     </style>
 
+    <style name="text_apperance.shadowed.movie_title.small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="text_apperance.storyline" >
 
     </style>
@@ -53,8 +57,16 @@
         <item name="android:textColor">@color/tag_text_color</item>
     </style>
 
+    <style name="text_apperance.tag.small">
+        <item name="android:textSize">8sp</item>
+    </style>
+
     <style name="text_apperance.reviews">
         <item name="android:textColor">@color/reviews_text_color</item>
+    </style>
+
+    <style name="text_apperance.reviews.small">
+        <item name="android:textSize">8sp</item>
     </style>
 
     <style name="RatingBar" parent="Theme.MaterialComponents">

@@ -7,4 +7,11 @@
     <string name="tag">Action, Adventure, Fantasy</string>
     <string name="reviews_count">125 REVIEWS</string>
     <string name="back_button_text"><![CDATA[< Back]]></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="list_title">Movies list</string>
+    <string name="age_13">13+</string>
+    <string name="duration">137 MIN</string>
+    <string name="text_movie">Movie</string>
+    <string name="text_">-</string>
 </resources>

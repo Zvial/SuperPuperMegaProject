@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="base_margin">16dp</dimen>
-    <dimen name="min_margin">12dp</dimen>
+    <!--> Общие <-->
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_44">44dp</dimen>
+    <dimen name="margin_48">48dp</dimen>
+
+    <!--> Детальный фрагмент <-->
     <dimen name="picture_width">80dp</dimen>
     <dimen name="picture_height">80dp</dimen>
     <dimen name="cast_name_height">32dp</dimen>
+
+    <!--> Фрагмент со списком <-->
+    <dimen name="age_view_size">24dp</dimen>
+    <dimen name="like_view_size">36dp</dimen>
+    <dimen name="age_view_corners_radius">4dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
 
 </resources>
