@@ -1,6 +1,5 @@
 package com.example.superpupermegaproject.ui
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,9 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.academy.fundamentals.homework.features.data.Movie
+import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.adapters.MoviesListAdapter
 import com.example.superpupermegaproject.R
+import com.example.superpupermegaproject.data.Movie
 import kotlinx.coroutines.*
 
 
@@ -28,7 +28,7 @@ class MoviesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, ViewModelFactory(context?.applicationContext as Application)).get(MoviesListViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory(App.getRepositoryInstance())).get(MoviesListViewModel::class.java)
 
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
@@ -42,10 +42,6 @@ class MoviesListFragment : Fragment() {
         scrollToPosition = savedInstanceState?.getInt(ARG_POS_NUMBER, 0) ?: 0
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onAttach(context: Context) {

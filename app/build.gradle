@@ -31,6 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    flavorDimensions "serverType"
+    productFlavors {
+        prod {
+            dimension "serverType"
+            buildConfigField "String", "API_BASE_URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "API_KEY", "\"48d93c2ce976fce2dce2e57e85befca8\""
+        }
+    }
 }
 
 dependencies {
@@ -57,5 +65,15 @@ dependencies {
     // LiveData
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    //Net
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+
+    //Coil
+    implementation 'io.coil-kt:coil:1.1.0'
+
 
 }

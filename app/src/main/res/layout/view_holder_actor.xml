@@ -20,6 +20,7 @@
             android:id="@+id/iv_actor_image"
             android:layout_width="@dimen/picture_width"
             android:layout_height="@dimen/picture_height"
+            android:scaleType="fitCenter"
             tools:src="@tools:sample/avatars" />
 
         <TextView

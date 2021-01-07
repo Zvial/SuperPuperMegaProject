@@ -8,8 +8,9 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.android.academy.fundamentals.homework.features.data.Movie
+import coil.load
 import com.example.superpupermegaproject.R
+import com.example.superpupermegaproject.data.Movie
 import com.example.superpupermegaproject.extensions.setImage
 import com.example.superpupermegaproject.extensions.setTint
 import com.example.superpupermegaproject.data.MoviesDataSource
@@ -23,7 +24,6 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
     fun updateMovieList(list: List<Movie>) {
         moviesList.clear()
         moviesList.addAll(list)
-        //notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -55,8 +55,12 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
         fun bind(movie: Movie) {
             isLiked = movie.isLiked
 
-            ivMovieImage?.setImage(movie.poster)
-
+            //ivMovieImage?.setImage(movie.backdrop)
+            ivMovieImage?.load(movie.poster) {
+                crossfade(true)
+                placeholder(R.drawable.ic_download_progress)
+                error(R.drawable.ic_download_error)
+            }
 
             tvAgeLimit?.setText(movie.ageLimitString)
             tvTagline?.setText(movie.genresString)
@@ -65,7 +69,8 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
             rbRating?.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
                 if (fromUser) {
                     movie.let {
-                        MoviesDataSource.setRating(it.id, rating)
+                        //TODO
+                        //MoviesDataSource.setRating(it.id, rating)
                     }
                 }
             }
@@ -96,8 +101,8 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
     }
 
     class MoviesDiffUtilCallback(
-            private val oldList: List<Movie>,
-            private val newList: List<Movie>
+        private val oldList: List<Movie>,
+        private val newList: List<Movie>
     ) : DiffUtil.Callback() {
         override fun getOldListSize() = oldList.size
 

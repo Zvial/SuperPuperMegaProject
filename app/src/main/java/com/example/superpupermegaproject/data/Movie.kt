@@ -1,4 +1,4 @@
-package com.android.academy.fundamentals.homework.features.data
+package com.example.superpupermegaproject.data
 
 data class Movie(
     val id: Long,

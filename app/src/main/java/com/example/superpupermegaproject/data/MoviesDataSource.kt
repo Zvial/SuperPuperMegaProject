@@ -1,6 +1,5 @@
 package com.example.superpupermegaproject.data
 
-import com.android.academy.fundamentals.homework.features.data.Movie
 
 object MoviesDataSource {
     var moviesList: List<Movie> = listOf()

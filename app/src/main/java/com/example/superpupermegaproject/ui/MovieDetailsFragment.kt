@@ -1,6 +1,5 @@
 package com.example.superpupermegaproject.ui
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,18 +11,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.academy.fundamentals.homework.features.data.Movie
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.adapters.ActorsListAdapter
-import com.example.superpupermegaproject.data.MoviesDataSource
-import com.example.superpupermegaproject.extensions.setImage
+import com.example.superpupermegaproject.data.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class MovieDetailsFragment : Fragment() {
-    private val viewModel by lazy { ViewModelProvider(this, ViewModelFactory(context?.applicationContext as Application)).get(MovieDetailsViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(this, ViewModelFactory(App.getRepositoryInstance())).get(MovieDetailsViewModel::class.java) }
     private var fragmentScope = CoroutineScope(Dispatchers.Main)
     private var tvBack: TextView? = null
     private var ivMovieImage: ImageView? = null
@@ -84,7 +84,12 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun bind(movie: Movie) {
-        ivMovieImage?.setImage(movie.backdrop)
+        //ivMovieImage?.setImage(movie.backdrop)
+        ivMovieImage?.load(movie.backdrop) {
+            placeholder(R.drawable.ic_download_progress)
+            error(R.drawable.ic_download_error)
+            crossfade(true)
+        }
 
         tvAgeLimit?.setText(movie.ageLimitString)
         tvTagline?.setText(movie.genresString)
