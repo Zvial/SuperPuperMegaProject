@@ -12,8 +12,6 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.data.Actor
-import com.example.superpupermegaproject.extensions.setImage
-
 
 class ActorsListAdapter :
     ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(ActorsDiffUtilCallback()) {

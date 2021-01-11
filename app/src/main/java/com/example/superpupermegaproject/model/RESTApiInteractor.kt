@@ -2,6 +2,7 @@ package com.example.superpupermegaproject.model
 
 import android.util.Log
 import com.example.superpupermegaproject.BuildConfig
+import com.example.superpupermegaproject.model.api_responses.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
@@ -9,9 +10,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import java.lang.Exception
 
-class RemoteAPIInteractor {
+class RESTApiInteractor {
     private val json = Json {
         ignoreUnknownKeys = true
     }
@@ -21,7 +21,7 @@ class RemoteAPIInteractor {
         throwable.printStackTrace()
     }
     private val remoteRequestsCoroutineContext = Dispatchers.IO + SupervisorJob() + handlerException
-    private lateinit var remoteApi: TmDBAPI
+    private lateinit var remoteApi: RESTApi
     private var imageURL: String = ""
     private var backdropSize: String = "original"
     private var posterSize: String = "original"
@@ -34,11 +34,11 @@ class RemoteAPIInteractor {
         }
     }
 
-    suspend fun loadMovies(): List<MovieItemResponse> {
+    suspend fun loadMovies(page: Int): List<MovieItemResponse> {
         val moviesList = mutableListOf<MovieItemResponse>()
         var response: MoviesListResponse? = null
         withContext(remoteRequestsCoroutineContext) {
-            response = remoteApi.getMovies()
+            response = remoteApi.getMovies(page = page + 1)
         }
 
         response?.let { movieResponse ->
@@ -103,7 +103,7 @@ class RemoteAPIInteractor {
             .client(okHttpClient)
             .build()
 
-        remoteApi = retrofitInstance.create(TmDBAPI::class.java)
+        remoteApi = retrofitInstance.create(RESTApi::class.java)
     }
 
     private suspend fun loadConfig() {
@@ -114,6 +114,8 @@ class RemoteAPIInteractor {
         posterSize = configurationResponse.images.posterSizes[1]
     }
 
-    private fun applyImagePath(imagePath: String, sizeString: String = "original") = imageURL + sizeString + imagePath
+    private fun applyImagePath(imagePath: String?, sizeString: String = "original") =
+        if(imagePath==null) null
+        else imageURL + sizeString + imagePath
 
 }

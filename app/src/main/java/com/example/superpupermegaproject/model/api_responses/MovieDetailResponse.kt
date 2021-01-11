@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.api_responses
 
 import kotlinx.serialization.*
 
@@ -7,7 +7,7 @@ data class MovieDetailResponse (
     val adult: Boolean,
 
     @SerialName("backdrop_path")
-    var backdropPath: String,
+    var backdropPath: String? = null,
 
     //@SerialName("belongs_to_collection")
     //val belongsToCollection: Any? = null,

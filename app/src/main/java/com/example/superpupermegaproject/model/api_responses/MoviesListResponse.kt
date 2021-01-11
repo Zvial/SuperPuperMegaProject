@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.api_responses
 
 import kotlinx.serialization.*
 
@@ -15,11 +15,11 @@ data class MoviesListResponse (
 )
 
 @Serializable
-data class MovieItemResponse (
+data class MovieItemResponse(
     val adult: Boolean,
 
     @SerialName("backdrop_path")
-    var backdropPath: String,
+    var backdropPath: String?,
 
     @SerialName("genre_ids")
     val genreIDS: List<Long>,
@@ -36,7 +36,7 @@ data class MovieItemResponse (
     val popularity: Double,
 
     @SerialName("poster_path")
-    var posterPath: String,
+    var posterPath: String? = null,
 
     @SerialName("release_date")
     val releaseDate: String,
