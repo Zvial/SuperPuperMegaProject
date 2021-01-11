@@ -24,6 +24,8 @@ class RemoteAPIInteractor {
     private lateinit var remoteApi: TmDBAPI
     private lateinit var configurationResponse: ConfigurationResponse
     private var imageURL: String = ""
+    private var backdropSize: String = "original"
+    private var posterSize: String = "original"
 
     init{
         initRetrofit()
@@ -50,8 +52,8 @@ class RemoteAPIInteractor {
             moviesList.clear()
             moviesList.addAll(movieResponse.results)
             moviesList.forEach { movie ->
-                movie.backdropPath = applyImagePath(movie.backdropPath)
-                movie.posterPath = applyImagePath(movie.posterPath)
+                movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
+                movie.posterPath = applyImagePath(movie.posterPath, posterSize)
             }
         }
 
@@ -61,9 +63,9 @@ class RemoteAPIInteractor {
     suspend fun loadMovie(id: Int): MovieDetailResponse =
         withContext(remoteRequestsCoroutineContext) {
             remoteApi.getMovie(id).apply {
-                backdropPath = applyImagePath(backdropPath)
+                backdropPath = applyImagePath(backdropPath, backdropSize)
                 posterPath?.let {
-                    posterPath = applyImagePath(it)
+                    posterPath = applyImagePath(it, posterSize)
                 }
             }
         }
@@ -120,9 +122,11 @@ class RemoteAPIInteractor {
             Log.d(this.javaClass.canonicalName, e.localizedMessage)
         }
 
-        imageURL = configurationResponse.images.secureBaseURL + "original"
+        imageURL = configurationResponse.images.secureBaseURL
+        backdropSize = configurationResponse.images.backdropSizes[1]
+        posterSize = configurationResponse.images.posterSizes[1]
     }
 
-    private fun applyImagePath(imagePath: String) = imageURL + imagePath
+    private fun applyImagePath(imagePath: String, sizeString: String = "original") = imageURL + sizeString + imagePath
 
 }

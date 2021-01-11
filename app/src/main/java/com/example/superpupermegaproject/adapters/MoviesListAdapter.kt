@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.data.Movie
-import com.example.superpupermegaproject.extensions.setImage
 import com.example.superpupermegaproject.extensions.setTint
-import com.example.superpupermegaproject.data.MoviesDataSource
 import com.example.superpupermegaproject.ui.MoviesListFragment
 
 class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>() {
@@ -79,7 +77,7 @@ class MoviesListAdapter: RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>
             manageLikedView()
             vLikedClickedArea.setOnClickListener {
                 isLiked = !isLiked
-                MoviesDataSource.setLiked(movie.id, isLiked)
+                //MoviesDataSource.setLiked(movie.id, isLiked)
                 manageLikedView()
             }
 

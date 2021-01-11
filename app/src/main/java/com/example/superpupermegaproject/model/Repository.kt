@@ -8,7 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class Repository private constructor(private val remoteAPIInteractor: RemoteAPIInteractor) {
-    private val genres: MutableList<Genre> = mutableListOf()
+    private val genresCache: MutableList<Genre> = mutableListOf()
+    private val runtimesCache = mutableMapOf<Int, Int>()
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -26,8 +27,8 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
                 backdrop = movieResponse.backdropPath,
                 movieResponse.voteAverage.toFloat(),
                 movieResponse.adult,
-                remoteAPIInteractor.loadMovie(movieResponse.id.toInt()).runtime.toInt(),
-                genres.filter { genre ->
+                getRuntimeValueForMovie(movieResponse.id.toInt()),
+                genresCache.filter { genre ->
                     movieResponse.genreIDS.contains(genre.id.toLong())
                 },
                 listOf(),
@@ -57,6 +58,14 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
         )
     }
 
+    private suspend fun getRuntimeValueForMovie(movieID: Int) = if(runtimesCache.containsKey(movieID)) {
+        runtimesCache[movieID]!!
+    } else {
+        val value = remoteAPIInteractor.loadMovie(movieID).runtime.toInt()
+        runtimesCache.put(movieID, value)
+        value
+    }
+
     private suspend fun getMovieActors(movieID: Int) = remoteAPIInteractor.loadMovieActors(movieID)
         .map { castResponse ->
             Actor(
@@ -66,8 +75,8 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
             )
         }
 
-    suspend private fun loadGenres() {
-        genres.addAll(remoteAPIInteractor.loadGenres().map {
+    private suspend fun loadGenres() {
+        genresCache.addAll(remoteAPIInteractor.loadGenres().map {
             Genre(it.id.toInt(), it.name)
         })
     }
