@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Repository private constructor(private val remoteAPIInteractor: RemoteAPIInteractor) {
+class Repository private constructor(private val ApiInteractor: RESTApiInteractor) {
     private val genresCache: MutableList<Genre> = mutableListOf()
     private val runtimesCache = mutableMapOf<Int, Int>()
 
@@ -17,8 +17,8 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
         }
     }
 
-    suspend fun getMovies(): List<Movie> =
-        remoteAPIInteractor.loadMovies().map { movieResponse ->
+    suspend fun getMovies(page: Int): List<Movie> =
+        ApiInteractor.loadMovies(page).map { movieResponse ->
             Movie(
                 movieResponse.id,
                 movieResponse.title,
@@ -38,7 +38,7 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
         }
 
     suspend fun getMovie(id: Int): Movie {
-        val movieResponse = remoteAPIInteractor.loadMovie(id)
+        val movieResponse = ApiInteractor.loadMovie(id)
         val genres = movieResponse.genres.map { genreResponse ->
             Genre(genreResponse.id.toInt(), genreResponse.name)
         }
@@ -61,12 +61,12 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
     private suspend fun getRuntimeValueForMovie(movieID: Int) = if(runtimesCache.containsKey(movieID)) {
         runtimesCache[movieID]!!
     } else {
-        val value = remoteAPIInteractor.loadMovie(movieID).runtime.toInt()
+        val value = ApiInteractor.loadMovie(movieID).runtime.toInt()
         runtimesCache.put(movieID, value)
         value
     }
 
-    private suspend fun getMovieActors(movieID: Int) = remoteAPIInteractor.loadMovieActors(movieID)
+    private suspend fun getMovieActors(movieID: Int) = ApiInteractor.loadMovieActors(movieID)
         .map { castResponse ->
             Actor(
                 id = castResponse.id.toInt(),
@@ -76,12 +76,12 @@ class Repository private constructor(private val remoteAPIInteractor: RemoteAPII
         }
 
     private suspend fun loadGenres() {
-        genresCache.addAll(remoteAPIInteractor.loadGenres().map {
+        genresCache.addAll(ApiInteractor.loadGenres().map {
             Genre(it.id.toInt(), it.name)
         })
     }
 
     companion object {
-        fun getInstance(remoteAPIInteractor: RemoteAPIInteractor) = Repository(remoteAPIInteractor)
+        fun getInstance(ApiInteractor: RESTApiInteractor) = Repository(ApiInteractor)
     }
 }

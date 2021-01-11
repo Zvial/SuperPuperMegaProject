@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpupermegaproject.App
-import com.example.superpupermegaproject.adapters.MoviesListAdapter
 import com.example.superpupermegaproject.R
-import com.example.superpupermegaproject.data.Movie
+import com.example.superpupermegaproject.adapters.MoviesListPagingAdapter
 import kotlinx.coroutines.*
 
 
@@ -32,10 +30,17 @@ class MoviesListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
+        val adapter = MoviesListPagingAdapter().apply {
+            this.onClickListener = this@MoviesListFragment.onClickListener
+        }
+
+        viewModel.moviesObservable.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
         rvMoviesList = view.findViewById<RecyclerView>(R.id.rv_movies_list)?.apply {
-            this.adapter = MoviesListAdapter().apply {
-                this.onClickListener = this@MoviesListFragment.onClickListener
-            }
+            //this.adapter = MoviesListAdapter().apply {
+            this.adapter = adapter
             this.layoutManager = GridLayoutManager(view.context, 2, RecyclerView.VERTICAL, false)
         }
 
@@ -52,36 +57,10 @@ class MoviesListFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        fragmentScope.launch {
-            viewModel.loadMovies()
-
-            viewModel.moviesObservable.observe(viewLifecycleOwner) {
-                updateRecyclerViewList(it, scrollToPosition)
-            }
-        }
-    }
-
     override fun onDetach() {
         super.onDetach()
 
         onClickListener = null
-    }
-
-    private fun updateRecyclerViewList(movies: List<Movie>, scrollTo: Int = 0) {
-         fragmentScope.launch {
-            rvMoviesList?.let {_rvMoviesList ->
-                with(_rvMoviesList.adapter as MoviesListAdapter) {
-                    val duCallback = MoviesListAdapter.MoviesDiffUtilCallback(this.moviesList, movies)
-                    val diff = DiffUtil.calculateDiff(duCallback, true)
-                    diff.dispatchUpdatesTo(this)
-                    this.updateMovieList(movies)
-                }
-
-                _rvMoviesList.layoutManager?.scrollToPosition(scrollTo)
-            }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

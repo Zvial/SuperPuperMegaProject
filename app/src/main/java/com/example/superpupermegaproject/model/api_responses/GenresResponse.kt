@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.api_responses
 
 import kotlinx.serialization.*
 
