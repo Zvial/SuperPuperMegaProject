@@ -15,10 +15,11 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class MoviesListViewModel(private val repository: Repository) : ViewModel() {
+    private val pageSize = 20
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
     private val pagedListConfig = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
-        .setPageSize(20)
+        .setPageSize(pageSize)
         .build()
     private val datasourceFactory = object : DataSource.Factory<Int, Movie>() {
         override fun create(): DataSource<Int, Movie> = MoviesPositionalDataSource(repository, viewModelScope)
