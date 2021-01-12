@@ -9,28 +9,25 @@ import retrofit2.http.Query
 interface RESTApi {
 
     @GET("configuration")
-    suspend fun getConfiguration(@Query("api_key") apiKey: String = BuildConfig.API_KEY): ConfigurationResponse
+    suspend fun getConfiguration(): ConfigurationResponse
 
     @GET("movie/{list_type}?language=ru")
     suspend fun getMovies(
         @Path("list_type") listType: String = "popular",
-        @Query("api_key") apiKey: String = BuildConfig.API_KEY,
         @Query("page") page: Int
     ): MoviesListResponse
 
     @GET("genre/movie/list?language=ru")
-    suspend fun getGenres(@Query("api_key") apiKey: String = BuildConfig.API_KEY): GenresResponse
+    suspend fun getGenres(): GenresResponse
 
     @GET("movie/{movie_id}?language=ru")
     suspend fun getMovie(
-        @Path("movie_id") movieID: Int,
-        @Query("api_key") apiKey: String = BuildConfig.API_KEY
+        @Path("movie_id") movieID: Int
     ): MovieDetailResponse
 
     @GET("movie/{movie_id}/credits?language=ru")
     suspend fun getMovieActors(
-        @Path("movie_id") movieID: Int,
-        @Query("api_key") apiKey: String = BuildConfig.API_KEY
+        @Path("movie_id") movieID: Int
     ): CreditsListResponse
 
 }

@@ -12,18 +12,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.CircleCropTransformation
 import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.adapters.ActorsListAdapter
 import com.example.superpupermegaproject.data.Movie
+import com.example.superpupermegaproject.ui.viewmodels.MovieDetailsViewModel
+import com.example.superpupermegaproject.ui.viewmodels.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class MovieDetailsFragment : Fragment() {
-    private val viewModel by lazy { ViewModelProvider(this, ViewModelFactory(App.getRepositoryInstance())).get(MovieDetailsViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(this, ViewModelFactory(App.getMoviesInteractorInstance())).get(
+        MovieDetailsViewModel::class.java) }
     private var fragmentScope = CoroutineScope(Dispatchers.Main)
     private var tvBack: TextView? = null
     private var ivMovieImage: ImageView? = null

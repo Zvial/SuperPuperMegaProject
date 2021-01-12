@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.adapters.MoviesListPagingAdapter
+import com.example.superpupermegaproject.ui.viewmodels.MoviesListViewModel
+import com.example.superpupermegaproject.ui.viewmodels.ViewModelFactory
 import kotlinx.coroutines.*
 
 
@@ -26,7 +28,8 @@ class MoviesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, ViewModelFactory(App.getRepositoryInstance())).get(MoviesListViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory(App.getMoviesInteractorInstance())).get(
+            MoviesListViewModel::class.java)
 
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
