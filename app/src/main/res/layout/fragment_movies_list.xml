@@ -20,13 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
+        android:contentDescription="@string/text_"
         android:src="@drawable/target"
         app:layout_constraintBottom_toBottomOf="@id/guideline_caption"
         app:layout_constraintEnd_toStartOf="@id/tv_caption"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/text_"
         app:layout_constraintTop_toBottomOf="@id/guideline_caption" />
 
     <TextView
@@ -54,24 +54,99 @@
         android:id="@+id/rv_movies_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/barrier_bottom_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/view_holder_movie"
+        tools:orientation="vertical"
+        tools:spanCount="2"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/text_apperance"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btn_update_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Строка статуса"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Обновить"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:orientation="vertical"
-        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:spanCount="2"
-        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
-        tools:listitem="@layout/view_holder_movie" />
+        app:layout_constraintTop_toBottomOf="@id/tv_state"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/margin_16" />
+
+    <TextView
+        android:id="@+id/tv_state_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/text_apperance"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_panel"
+        app:layout_constraintEnd_toStartOf="@id/btn_update_next"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom_panel"
+        tools:text="Строка статуса"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Обновить"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_16"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_state_next"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom_panel"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:barrierMargin="@dimen/margin_8"
+        app:constraint_referenced_ids="btn_update_next, tv_state_next" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_mix_list"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_baseline_shuffle_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/margin_16"
         android:contentDescription="@string/text_"
-        android:layout_margin="@dimen/margin_16"/>
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_shuffle_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

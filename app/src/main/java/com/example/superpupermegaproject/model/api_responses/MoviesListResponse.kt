@@ -39,7 +39,7 @@ data class MovieItemResponse(
     var posterPath: String? = null,
 
     @SerialName("release_date")
-    val releaseDate: String,
+    val releaseDate: String? = null,
 
     val title: String,
     val video: Boolean,

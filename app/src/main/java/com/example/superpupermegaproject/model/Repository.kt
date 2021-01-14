@@ -6,11 +6,8 @@ import com.example.superpupermegaproject.model.api_responses.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
@@ -19,17 +16,18 @@ class Repository(private val apiKey: String) {
         ignoreUnknownKeys = true
     }
 
-    private val handlerException = CoroutineExceptionHandler{ context, throwable ->
+    private val handlerException = CoroutineExceptionHandler { context, throwable ->
         Log.d(this.javaClass.canonicalName, throwable.localizedMessage)
         throwable.printStackTrace()
     }
     private val remoteRequestsCoroutineContext = Dispatchers.IO + SupervisorJob() + handlerException
     private lateinit var remoteApi: RESTApi
-    private var imageURL: String = ""
+
+    private var imageURL: String = "" //URL для загрузки картинок, полученный из config запроса
     private var backdropSize: String = "original"
     private var posterSize: String = "original"
 
-    init{
+    init {
         initRetrofit()
 
         CoroutineScope(remoteRequestsCoroutineContext).launch {
@@ -41,7 +39,12 @@ class Repository(private val apiKey: String) {
         val moviesList = mutableListOf<MovieItemResponse>()
         var response: MoviesListResponse? = null
         withContext(remoteRequestsCoroutineContext) {
-            response = remoteApi.getMovies(page = page + 1)
+            try {
+                response = remoteApi.getMovies(page = page + 1)
+            } catch (t: Throwable) {
+                Log.d("LOG", t.localizedMessage)
+                throw t
+            }
         }
 
         response?.let { movieResponse ->
@@ -56,24 +59,34 @@ class Repository(private val apiKey: String) {
         return moviesList
     }
 
-    suspend fun loadMovie(id: Int): MovieDetailResponse =
+    suspend fun loadMovie(id: Int): MovieDetailResponse? =
         withContext(remoteRequestsCoroutineContext) {
-            remoteApi.getMovie(id).apply {
-                backdropPath = applyImagePath(backdropPath, backdropSize)
-                posterPath?.let {
-                    posterPath = applyImagePath(it, posterSize)
+            try {
+                remoteApi.getMovie(id).apply {
+                    backdropPath = applyImagePath(backdropPath, backdropSize)
+                    posterPath?.let {
+                        posterPath = applyImagePath(it, posterSize)
+                    }
                 }
+            } catch (t: Throwable) {
+                Log.d(this.javaClass.canonicalName, t.localizedMessage)
+                null
             }
         }
 
     suspend fun loadMovieActors(movieID: Int): List<CastResponse> =
         withContext(remoteRequestsCoroutineContext) {
-            remoteApi.getMovieActors(movieID).cast.apply {
-                forEach { castResponse ->
-                    castResponse.profilePath?.let {
-                        castResponse.profilePath = applyImagePath(it)
+            try {
+                remoteApi.getMovieActors(movieID).cast.apply {
+                    forEach { castResponse ->
+                        castResponse.profilePath?.let {
+                            castResponse.profilePath = applyImagePath(it)
+                        }
                     }
                 }
+            } catch (t: Throwable) {
+                Log.d(this.javaClass.canonicalName, t.localizedMessage)
+                emptyList<CastResponse>()
             }
         }
 
@@ -81,7 +94,11 @@ class Repository(private val apiKey: String) {
         val genresList = mutableListOf<GenreResponse>()
         var response: GenresResponse? = null
         withContext(remoteRequestsCoroutineContext) {
-            response = remoteApi.getGenres()
+            try {
+                response = remoteApi.getGenres()
+            } catch (t: Throwable) {
+                Log.d(this.javaClass.canonicalName, t.localizedMessage)
+            }
         }
 
         response?.let { genresResponse ->
@@ -111,29 +128,20 @@ class Repository(private val apiKey: String) {
     }
 
     private suspend fun loadConfig() {
-        val configurationResponse = remoteApi.getConfiguration()
+        try {
+            val configurationResponse = remoteApi.getConfiguration()
 
-        imageURL = configurationResponse.images.secureBaseURL
-        backdropSize = configurationResponse.images.backdropSizes[1]
-        posterSize = configurationResponse.images.posterSizes[1]
+            imageURL = configurationResponse.images.secureBaseURL
+            backdropSize = configurationResponse.images.backdropSizes[1]
+            posterSize = configurationResponse.images.posterSizes[1]
+        } catch (t: Throwable) {
+            Log.d(this.javaClass.canonicalName, t.localizedMessage)
+        }
     }
 
     private fun applyImagePath(imagePath: String?, sizeString: String = "original") =
-        if(imagePath==null) null
+        if (imagePath == null) null
         else imageURL + sizeString + imagePath
 
 }
 
-class ApiKeyInterceptor(val apiKey: String): Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val url = chain.request().url
-            .newBuilder()
-            .addQueryParameter("api_key", apiKey)
-            .build()
-        val request = chain.request().newBuilder()
-            .url(url)
-            .build()
-
-        return chain.proceed(request)
-    }
-}
