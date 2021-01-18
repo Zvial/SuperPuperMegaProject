@@ -1,11 +1,11 @@
-package com.android.academy.fundamentals.homework.features.data
+package com.example.superpupermegaproject.data
 
 data class Movie(
     val id: Long,
     val title: String,
     val overview: String,
-    val poster: String,
-    val backdrop: String,
+    val poster: String?,
+    val backdrop: String?,
     var ratings: Float,
     val adult: Boolean,
     val runtime: Int,

@@ -19,4 +19,7 @@
     <dimen name="age_view_corners_radius">4dp</dimen>
     <dimen name="margin_4">4dp</dimen>
 
+    <dimen name="space_big">32dp</dimen>
+    <dimen name="space_huge">48dp</dimen>
+
 </resources>

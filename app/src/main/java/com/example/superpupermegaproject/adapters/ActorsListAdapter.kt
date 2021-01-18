@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.android.academy.fundamentals.homework.features.data.Actor
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.example.superpupermegaproject.R
-import com.example.superpupermegaproject.extensions.setImage
-
+import com.example.superpupermegaproject.data.Actor
 
 class ActorsListAdapter :
     ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(ActorsDiffUtilCallback()) {
@@ -34,7 +34,13 @@ class ActorsListAdapter :
         private val tvActorName = itemView.findViewById<TextView>(R.id.tv_actor_name)
 
         fun bind(actor: Actor) {
-            ivActorImage?.setImage(actor.picture)
+            ivActorImage?.load(actor.picture) {
+                error(R.drawable.ic_download_error)
+                placeholder(R.drawable.ic_download_progress)
+                fallback(R.drawable.ic_download_error)
+                crossfade(true)
+                transformations(RoundedCornersTransformation())
+            }
 
             tvActorName.setText(actor.name)
         }
