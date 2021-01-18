@@ -26,6 +26,8 @@ class Repository(private val apiKey: String) {
     private var imageURL: String = "" //URL для загрузки картинок, полученный из config запроса
     private var backdropSize: String = "original"
     private var posterSize: String = "original"
+    var lastPage = 0
+        private set
 
     init {
         initRetrofit()
@@ -35,24 +37,46 @@ class Repository(private val apiKey: String) {
         }
     }
 
-    suspend fun loadMovies(page: Int): List<MovieItemResponse> {
+    fun clearLastPage() {
+        lastPage = 0
+    }
+
+    suspend fun searchMovies(query: String): List<MovieItemResponse>{
         val moviesList = mutableListOf<MovieItemResponse>()
-        var response: MoviesListResponse? = null
+
         withContext(remoteRequestsCoroutineContext) {
             try {
-                response = remoteApi.getMovies(page = page + 1)
+                val response = remoteApi.searchMovies(query = query, page = lastPage + 1)
+                lastPage = response.page.toInt()
+                moviesList.addAll(response.results)
+                moviesList.forEach { movie ->
+                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
+                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
+                }
             } catch (t: Throwable) {
                 Log.d("LOG", t.localizedMessage)
                 throw t
             }
         }
 
-        response?.let { movieResponse ->
-            moviesList.clear()
-            moviesList.addAll(movieResponse.results)
-            moviesList.forEach { movie ->
-                movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
-                movie.posterPath = applyImagePath(movie.posterPath, posterSize)
+        return moviesList
+    }
+
+    suspend fun loadMovies(): List<MovieItemResponse> {
+        val moviesList = mutableListOf<MovieItemResponse>()
+
+        withContext(remoteRequestsCoroutineContext) {
+            try {
+                val response = remoteApi.getMovies(page = lastPage + 1)
+                lastPage = response.page.toInt()
+                moviesList.addAll(response.results)
+                moviesList.forEach { movie ->
+                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
+                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
+                }
+            } catch (t: Throwable) {
+                Log.d("LOG", t.localizedMessage)
+                throw t
             }
         }
 
@@ -61,12 +85,11 @@ class Repository(private val apiKey: String) {
 
     suspend fun loadMovie(id: Int): MovieDetailResponse? =
         withContext(remoteRequestsCoroutineContext) {
+            lastPage = 0
             try {
                 remoteApi.getMovie(id).apply {
                     backdropPath = applyImagePath(backdropPath, backdropSize)
-                    posterPath?.let {
-                        posterPath = applyImagePath(it, posterSize)
-                    }
+                    posterPath = applyImagePath(posterPath, posterSize)
                 }
             } catch (t: Throwable) {
                 Log.d(this.javaClass.canonicalName, t.localizedMessage)
@@ -140,8 +163,10 @@ class Repository(private val apiKey: String) {
     }
 
     private fun applyImagePath(imagePath: String?, sizeString: String = "original") =
-        if (imagePath == null) null
-        else imageURL + sizeString + imagePath
+            if (imagePath == null)
+                null
+            else
+                imageURL + sizeString + imagePath
 
 }
 

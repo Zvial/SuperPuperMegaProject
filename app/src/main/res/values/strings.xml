@@ -14,4 +14,5 @@
     <string name="duration">137 MIN</string>
     <string name="text_movie">Movie</string>
     <string name="text_">-</string>
+    <string name="hint_search_query">Enter search query…</string>
 </resources>
