@@ -13,8 +13,8 @@ interface RESTApi {
 
     @GET("movie/{list_type}?language=ru")
     suspend fun getMovies(
-        @Path("list_type") listType: String = "popular",
-        @Query("page") page: Int
+            @Path("list_type") listType: String = "popular",
+            @Query("page") page: Int
     ): MoviesListResponse
 
     @GET("genre/movie/list?language=ru")
@@ -22,12 +22,16 @@ interface RESTApi {
 
     @GET("movie/{movie_id}?language=ru")
     suspend fun getMovie(
-        @Path("movie_id") movieID: Int
+            @Path("movie_id") movieID: Int
     ): MovieDetailResponse
 
     @GET("movie/{movie_id}/credits?language=ru")
     suspend fun getMovieActors(
-        @Path("movie_id") movieID: Int
+            @Path("movie_id") movieID: Int
     ): CreditsListResponse
+
+    @GET("search/movie?language=ru")
+    suspend fun searchMovies(@Query("query") query: String,
+                             @Query("page") page: Int): MoviesListResponse
 
 }

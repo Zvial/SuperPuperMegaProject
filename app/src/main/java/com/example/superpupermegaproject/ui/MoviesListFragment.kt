@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +30,7 @@ class MoviesListFragment : Fragment() {
     private var btnUpdateFirst: MaterialButton? = null
     private var tvStateNext: TextView? = null
     private var btnUpdateNext: MaterialButton? = null
+    private var etSearchQuery: EditText? = null
 
     //private lateinit var adapter: MoviesListPagingAdapter
     private var fragmentScope = CoroutineScope(Dispatchers.Main)
@@ -117,6 +120,15 @@ class MoviesListFragment : Fragment() {
         btnUpdateNext = parent.findViewById(R.id.btn_update_next)
         btnUpdateNext?.setOnClickListener {
             updateMoviesList()
+        }
+
+        etSearchQuery = parent.findViewById(R.id.et_search)
+        etSearchQuery?.doAfterTextChanged {
+            //viewModel.searchTextChanged(it.toString())
+            fragmentScope.launch {
+                viewModel.queryChannel.value = it.toString()
+            }
+
         }
     }
 

@@ -50,6 +50,19 @@
         app:barrierMargin="@dimen/margin_16"
         app:constraint_referenced_ids="iv_target, tv_caption" />
 
+    <EditText
+        android:id="@+id/et_search"
+        style="@style/SearchStyle"
+        android:visibility="visible"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:importantForAutofill="no"
+        android:backgroundTint="@color/cast_text_color"
+        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
+        android:layout_marginBottom="@dimen/margin_4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies_list"
         android:layout_width="match_parent"
@@ -58,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="@id/barrier_bottom_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier_caption"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/view_holder_movie"
         tools:orientation="vertical"
