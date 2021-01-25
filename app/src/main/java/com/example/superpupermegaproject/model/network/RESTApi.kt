@@ -1,7 +1,6 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.network.api_responses
 
-import com.example.superpupermegaproject.BuildConfig
-import com.example.superpupermegaproject.model.api_responses.*
+import com.example.superpupermegaproject.model.network.api_responses.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

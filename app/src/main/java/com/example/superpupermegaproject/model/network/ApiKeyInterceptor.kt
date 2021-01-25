@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.network.api_responses
 
 import okhttp3.Interceptor
 import okhttp3.Response
