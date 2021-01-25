@@ -1,8 +1,7 @@
-package com.example.superpupermegaproject.model
+package com.example.superpupermegaproject.model.network.api_responses
 
 import android.util.Log
 import com.example.superpupermegaproject.BuildConfig
-import com.example.superpupermegaproject.model.api_responses.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
@@ -10,8 +9,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import timber.log.Timber
 
-class Repository(private val apiKey: String) {
+class RemoteAPIRepository(private val apiKey: String) {
     private val json = Json {
         ignoreUnknownKeys = true
     }
@@ -62,12 +62,36 @@ class Repository(private val apiKey: String) {
         return moviesList
     }
 
+    @Deprecated("page needed")
     suspend fun loadMovies(): List<MovieItemResponse> {
         val moviesList = mutableListOf<MovieItemResponse>()
 
         withContext(remoteRequestsCoroutineContext) {
             try {
                 val response = remoteApi.getMovies(page = lastPage + 1)
+                lastPage = response.page.toInt()
+                moviesList.addAll(response.results)
+                moviesList.forEach { movie ->
+                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
+                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
+                }
+            } catch (t: Throwable) {
+                Log.d("LOG", t.localizedMessage)
+                throw t
+            }
+        }
+
+        return moviesList
+    }
+
+    suspend fun loadMovies(page: Int): List<MovieItemResponse> {
+        val moviesList = mutableListOf<MovieItemResponse>()
+
+        Timber.d("Load movies from network")
+
+        withContext(remoteRequestsCoroutineContext) {
+            try {
+                val response = remoteApi.getMovies(page = page)
                 lastPage = response.page.toInt()
                 moviesList.addAll(response.results)
                 moviesList.forEach { movie ->

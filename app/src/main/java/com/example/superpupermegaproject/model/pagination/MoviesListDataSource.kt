@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.ui.pagination
+package com.example.superpupermegaproject.model.pagination
 
 import androidx.lifecycle.MutableLiveData
 import com.example.superpupermegaproject.data.Movie
@@ -12,5 +12,6 @@ class MoviesListDataSource(
     stateObservable: MutableLiveData<MovieResultState>
 ) : MoviesPositionalDataSource(moviesInteractor, scope, stateObservable) {
     override suspend fun loadMovies(isInitial: Boolean): List<Movie> =
-        moviesInteractor.getMovies(isInitial)
+        //moviesInteractor.getMovies(isInitial)
+        moviesInteractor.getMovies()
 }

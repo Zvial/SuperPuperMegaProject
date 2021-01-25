@@ -53,7 +53,7 @@
     <EditText
         android:id="@+id/et_search"
         style="@style/SearchStyle"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="72dp"
         android:importantForAutofill="no"

@@ -1,4 +1,4 @@
-package com.example.superpupermegaproject.ui.pagination
+package com.example.superpupermegaproject.model.pagination
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

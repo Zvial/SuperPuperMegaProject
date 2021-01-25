@@ -1,14 +1,26 @@
 package com.example.superpupermegaproject
 
 import android.app.Application
-import com.example.superpupermegaproject.model.Repository
+import android.content.Context
+import com.example.superpupermegaproject.model.network.api_responses.RemoteAPIRepository
 import com.example.superpupermegaproject.model.MoviesInteractor
+import com.example.superpupermegaproject.model.database.entities.MoviesDatabase
+import timber.log.Timber
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
         initApiKey()
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+
+        val tree = Timber.DebugTree()
+        Timber.plant(tree)
+
+        appContext = base!!
     }
 
     private fun initApiKey() {
@@ -22,22 +34,27 @@ class App : Application() {
     }
 
     companion object {
+        lateinit var appContext: Context
+
         private var apiKey: String = ""
         private var moviesInteractorInstance: MoviesInteractor? = null
-        private var repositoryInstance: Repository? = null
+        private var remoteAPIRepositoryInstance: RemoteAPIRepository? = null
+        private var moviesDatabase: MoviesDatabase? = null
 
         fun getMoviesInteractorInstance(): MoviesInteractor =
             if (moviesInteractorInstance == null) {
-                MoviesInteractor.getInstance(getRepositoryInstance())
+                MoviesInteractor.getInstance(getRepositoryInstance(), getMoviesDatabaseInstance())
             } else {
                 moviesInteractorInstance!!
             }
 
-        private fun getRepositoryInstance(): Repository =
-            if (repositoryInstance == null) {
-                Repository(apiKey)
+        private fun getRepositoryInstance(): RemoteAPIRepository =
+            if (remoteAPIRepositoryInstance == null) {
+                RemoteAPIRepository(apiKey)
             } else {
-                repositoryInstance!!
+                remoteAPIRepositoryInstance!!
             }
+
+        private fun getMoviesDatabaseInstance() = MoviesDatabase.getInstance(appContext)
     }
 }

@@ -4,17 +4,13 @@ package com.example.superpupermegaproject.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.superpupermegaproject.data.Movie
 import com.example.superpupermegaproject.model.MovieResultState
 import com.example.superpupermegaproject.model.MoviesInteractor
-import com.example.superpupermegaproject.ui.pagination.MovieDataSourceFactory
-import com.example.superpupermegaproject.ui.pagination.MoviesPositionalDataSource
+import com.example.superpupermegaproject.model.pagination.MovieDataSourceFactory
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
 class MoviesListViewModel(private val moviesInteractor: MoviesInteractor) : ViewModel() {
@@ -28,7 +24,9 @@ class MoviesListViewModel(private val moviesInteractor: MoviesInteractor) : View
         .setPageSize(pageSize)
         .build()
     private val datasourceFactory = MovieDataSourceFactory(moviesInteractor, viewModelScope, _stateObservable)
-    var moviesObservable = LivePagedListBuilder<Int, Movie>(datasourceFactory, pagedListConfig).build()
+    var moviesObservable = LivePagedListBuilder<Int, Movie>(datasourceFactory, pagedListConfig)
+        .setBoundaryCallback(BoundaryCallback(moviesInteractor, viewModelScope, datasourceFactory))
+        .build()
         private set
     val stateObservable: LiveData<MovieResultState> = _stateObservable
     val queryChannel = MutableStateFlow("")
