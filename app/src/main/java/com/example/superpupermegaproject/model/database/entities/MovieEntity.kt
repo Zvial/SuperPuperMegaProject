@@ -17,7 +17,7 @@ data class MovieEntity(
         val movieID: Long,
 
         @ColumnInfo(name = moviesTableContract.COLUMN_NAME_POSITION)
-        val position: Int,
+        val position: Long,
 
         @ColumnInfo(name = moviesTableContract.COLUMN_NAME_TITLE)
         val title: String,

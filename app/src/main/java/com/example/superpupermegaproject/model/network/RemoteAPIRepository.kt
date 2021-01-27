@@ -17,7 +17,7 @@ class RemoteAPIRepository(private val apiKey: String) {
     }
 
     private val handlerException = CoroutineExceptionHandler { context, throwable ->
-        Log.d(this.javaClass.canonicalName, throwable.localizedMessage)
+        Timber.d(throwable.localizedMessage)
         throwable.printStackTrace()
     }
     private val remoteRequestsCoroutineContext = Dispatchers.IO + SupervisorJob() + handlerException
@@ -26,7 +26,9 @@ class RemoteAPIRepository(private val apiKey: String) {
     private var imageURL: String = "" //URL для загрузки картинок, полученный из config запроса
     private var backdropSize: String = "original"
     private var posterSize: String = "original"
-    var lastPage = 0
+    var lastPage = 0L
+        private set
+    var maxPage = 0L
         private set
 
     init {
@@ -42,17 +44,12 @@ class RemoteAPIRepository(private val apiKey: String) {
     }
 
     suspend fun searchMovies(query: String): List<MovieItemResponse>{
-        val moviesList = mutableListOf<MovieItemResponse>()
+        var moviesList = listOf<MovieItemResponse>()
 
         withContext(remoteRequestsCoroutineContext) {
             try {
                 val response = remoteApi.searchMovies(query = query, page = lastPage + 1)
-                lastPage = response.page.toInt()
-                moviesList.addAll(response.results)
-                moviesList.forEach { movie ->
-                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
-                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
-                }
+                moviesList = parseMoviesListResponse(response)
             } catch (t: Throwable) {
                 Log.d("LOG", t.localizedMessage)
                 throw t
@@ -64,17 +61,12 @@ class RemoteAPIRepository(private val apiKey: String) {
 
     @Deprecated("page needed")
     suspend fun loadMovies(): List<MovieItemResponse> {
-        val moviesList = mutableListOf<MovieItemResponse>()
+        var moviesList = listOf<MovieItemResponse>()
 
         withContext(remoteRequestsCoroutineContext) {
             try {
                 val response = remoteApi.getMovies(page = lastPage + 1)
-                lastPage = response.page.toInt()
-                moviesList.addAll(response.results)
-                moviesList.forEach { movie ->
-                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
-                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
-                }
+                moviesList = parseMoviesListResponse(response)
             } catch (t: Throwable) {
                 Log.d("LOG", t.localizedMessage)
                 throw t
@@ -84,26 +76,36 @@ class RemoteAPIRepository(private val apiKey: String) {
         return moviesList
     }
 
-    suspend fun loadMovies(page: Int): List<MovieItemResponse> {
-        val moviesList = mutableListOf<MovieItemResponse>()
+    suspend fun loadMovies(page: Long): List<MovieItemResponse> {
+        var moviesList = listOf<MovieItemResponse>()
 
         Timber.d("Load movies from network")
 
         withContext(remoteRequestsCoroutineContext) {
             try {
                 val response = remoteApi.getMovies(page = page)
-                lastPage = response.page.toInt()
-                moviesList.addAll(response.results)
-                moviesList.forEach { movie ->
-                    movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
-                    movie.posterPath = applyImagePath(movie.posterPath, posterSize)
-                }
+                moviesList = parseMoviesListResponse(response)
             } catch (t: Throwable) {
                 Log.d("LOG", t.localizedMessage)
                 throw t
             }
         }
 
+        return moviesList
+    }
+
+    private fun parseMoviesListResponse(response: MoviesListResponse): List<MovieItemResponse> {
+        val moviesList = mutableListOf<MovieItemResponse>()
+        
+        maxPage = response.totalPages
+        lastPage = response.page
+        
+        moviesList.addAll(response.results)
+        moviesList.forEach { movie ->
+            movie.backdropPath = applyImagePath(movie.backdropPath, backdropSize)
+            movie.posterPath = applyImagePath(movie.posterPath, posterSize)
+        }
+        
         return moviesList
     }
 
@@ -191,6 +193,10 @@ class RemoteAPIRepository(private val apiKey: String) {
                 null
             else
                 imageURL + sizeString + imagePath
+
+    companion object {
+        const val PAGE_SIZE = 20
+    }
 
 }
 

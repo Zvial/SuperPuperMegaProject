@@ -3,6 +3,7 @@ package com.example.superpupermegaproject.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 
 class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
@@ -24,10 +25,23 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
         activityIsDestroying = false
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        val workInteractor = App.getWorkInteractorInstance()
+        workInteractor.pushWorkRequestToEnqueue(workInteractor.createPeriodicWorkRequest())
+        App.getPrefsRepositoryInstance().writeToFileLog("Activity onStart")
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         activityIsDestroying = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+
     }
 
     override fun onClickItem(itemID: Long, position: Int) {
