@@ -9,11 +9,14 @@ import androidx.paging.PagedList
 import com.example.superpupermegaproject.data.Movie
 import com.example.superpupermegaproject.model.MovieResultState
 import com.example.superpupermegaproject.model.MoviesInteractor
+import com.example.superpupermegaproject.model.WorkInteractor
 import com.example.superpupermegaproject.model.pagination.MovieDataSourceFactory
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class MoviesListViewModel(private val moviesInteractor: MoviesInteractor) : ViewModel() {
+class MoviesListViewModel(
+        private val moviesInteractor: MoviesInteractor,
+        private val workInteractor: WorkInteractor) : ViewModel() {
     private val pageSize = 20
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
     private val _stateObservable = MutableLiveData<MovieResultState>()
@@ -43,6 +46,8 @@ class MoviesListViewModel(private val moviesInteractor: MoviesInteractor) : View
                     isFirstQueryValue = false
             }
         }
+
+        workInteractor.startWorkRequest()
     }
 
     override fun onCleared() {

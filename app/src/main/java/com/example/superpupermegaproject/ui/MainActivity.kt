@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
 
     override fun onStart() {
         super.onStart()
-
-        val workInteractor = App.getWorkInteractorInstance()
-        workInteractor.pushWorkRequestToEnqueue(workInteractor.createPeriodicWorkRequest())
-        App.getPrefsRepositoryInstance().writeToFileLog("Activity onStart")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

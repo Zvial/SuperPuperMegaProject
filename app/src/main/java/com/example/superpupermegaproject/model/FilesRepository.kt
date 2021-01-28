@@ -29,11 +29,10 @@ class FilesRepository(private val appContext: Context) {
         try {
             val file = File(filePath)
             // отрываем поток для записи
-            val writer = file.bufferedWriter()
-            // пишем данные
-            writer.write(content)
-            // закрываем поток
-            writer.close()
+            file.bufferedWriter().use { writer ->
+                // пишем данные
+                writer.write(content)
+            }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {

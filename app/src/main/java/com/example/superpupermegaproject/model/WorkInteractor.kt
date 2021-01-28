@@ -10,39 +10,51 @@ class WorkInteractor(
 ) {
     private val UPDATE_CACHE_WORK_NAME = "com.example.superpupermegaproject.update_cache_work"
 
-    fun createPeriodicWorkRequest(): WorkRequest {
+    fun startWorkRequest() {
+        workManager.getWorkInfosForUniqueWorkLiveData(UPDATE_CACHE_WORK_NAME)
+                .observeForever { list ->
+                    val notWorked = list.filter { workInfo ->
+                        workInfo.state != WorkInfo.State.CANCELLED
+                    }.isEmpty()
+
+                    if (notWorked)
+                        pushWorkRequestToEnqueue(createPeriodicWorkRequest())
+                }
+    }
+
+    fun cancelWorkRequest() {
+        workManager.cancelUniqueWork(UPDATE_CACHE_WORK_NAME)
+        Timber.d("Отменен запрос WorkManager")
+    }
+
+    private fun createPeriodicWorkRequest(): WorkRequest {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresCharging(true)
-            .build()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build()
 
         val request = PeriodicWorkRequestBuilder<UpdateCacheWork>(15, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .build()
+                .setConstraints(constraints)
+                .build()
 
         Timber.d("Создан запрос WorkManager")
 
         return request
     }
 
-    fun pushWorkRequestToEnqueue(workRequest: WorkRequest) {
+    private fun pushWorkRequestToEnqueue(workRequest: WorkRequest) {
         when (workRequest) {
             is PeriodicWorkRequest -> workManager.enqueueUniquePeriodicWork(
-                UPDATE_CACHE_WORK_NAME,
-                ExistingPeriodicWorkPolicy.KEEP,
-                workRequest
+                    UPDATE_CACHE_WORK_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    workRequest
             )
             is OneTimeWorkRequest -> workManager.enqueueUniqueWork(
-                UPDATE_CACHE_WORK_NAME,
-                ExistingWorkPolicy.KEEP,
-                workRequest
+                    UPDATE_CACHE_WORK_NAME,
+                    ExistingWorkPolicy.KEEP,
+                    workRequest
             )
         }
         Timber.d("Запрос поставлен в очередь")
-    }
-
-    fun cancelWorkRequest() {
-        workManager.cancelUniqueWork(UPDATE_CACHE_WORK_NAME)
-        Timber.d("Отменен запрос WorkManager")
     }
 }
