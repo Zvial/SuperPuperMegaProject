@@ -1,5 +1,9 @@
 package com.example.superpupermegaproject.model
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.work.*
 import com.example.superpupermegaproject.model.work_manager.UpdateCacheWork
 import timber.log.Timber
@@ -7,9 +11,10 @@ import java.util.concurrent.TimeUnit
 
 class WorkInteractor(
     private val workManager: WorkManager
-) {
+): LifecycleObserver {
     private val UPDATE_CACHE_WORK_NAME = "com.example.superpupermegaproject.update_cache_work"
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun startWorkRequest() {
         workManager.getWorkInfosForUniqueWorkLiveData(UPDATE_CACHE_WORK_NAME)
                 .observeForever { list ->

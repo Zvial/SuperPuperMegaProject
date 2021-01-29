@@ -15,8 +15,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 class MoviesListViewModel(
-        private val moviesInteractor: MoviesInteractor,
-        private val workInteractor: WorkInteractor) : ViewModel() {
+        private val moviesInteractor: MoviesInteractor) : ViewModel() {
     private val pageSize = 20
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
     private val _stateObservable = MutableLiveData<MovieResultState>()
@@ -46,8 +45,6 @@ class MoviesListViewModel(
                     isFirstQueryValue = false
             }
         }
-
-        workInteractor.startWorkRequest()
     }
 
     override fun onCleared() {

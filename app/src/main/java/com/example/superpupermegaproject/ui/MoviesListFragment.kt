@@ -42,10 +42,7 @@ class MoviesListFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val viewModelFactory = MoviesListViewModelFactory(
-                App.getMoviesInteractorInstance(),
-                App.getWorkInteractorInstance()
-        )
+        val viewModelFactory = MoviesListViewModelFactory(App.getMoviesInteractorInstance())
         viewModel = ViewModelProvider(this, viewModelFactory).get(
                 MoviesListViewModel::class.java)
 

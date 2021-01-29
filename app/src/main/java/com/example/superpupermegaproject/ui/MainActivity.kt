@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
         if (savedInstanceState == null) {
             setFragment(MoviesListFragment.newInstance(), false)
         }
+
+        lifecycle.addObserver(App.getWorkInteractorInstance())
     }
 
     override fun onRestart() {
