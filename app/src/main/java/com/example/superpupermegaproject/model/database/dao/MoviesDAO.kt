@@ -46,7 +46,7 @@ interface MoviesDAO {
                     "   ${MoviesDatabase.Companion.DatabaseContract.moviesTable.COLUMN_NAME_POSITION} " +
                     "LIMIT :firstRow, :rowsCount "
     )
-    suspend fun getAllByPage(firstRow: Int, rowsCount: Int): List<MovieEntity>
+    suspend fun getAllByPage(firstRow: Long, rowsCount: Int): List<MovieEntity>
 
     /*@Transaction
     @Query(

@@ -11,14 +11,15 @@ import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.adapters.MoviesListPagingAdapter
 import com.example.superpupermegaproject.model.MovieResultState
+import com.example.superpupermegaproject.model.WorkInteractor
 import com.example.superpupermegaproject.ui.viewmodels.MoviesListViewModel
-import com.example.superpupermegaproject.ui.viewmodels.ViewModelFactory
+import com.example.superpupermegaproject.ui.viewmodels.MovieDetailsViewModelFactory
+import com.example.superpupermegaproject.ui.viewmodels.MoviesListViewModelFactory
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.*
 
@@ -41,7 +42,8 @@ class MoviesListFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, ViewModelFactory(App.getMoviesInteractorInstance())).get(
+        val viewModelFactory = MoviesListViewModelFactory(App.getMoviesInteractorInstance())
+        viewModel = ViewModelProvider(this, viewModelFactory).get(
                 MoviesListViewModel::class.java)
 
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
@@ -156,12 +158,12 @@ class MoviesListFragment : Fragment() {
         rvMoviesList = parent.findViewById<RecyclerView>(R.id.rv_movies_list)?.apply {
             this.adapter = adapter
             this.layoutManager = GridLayoutManager(parent.context, 2, RecyclerView.VERTICAL, false)
-            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    if(checkShownLastItemsInList()) {
-                        when(viewModel.stateObservable.value) {
+                    if (checkShownLastItemsInList()) {
+                        when (viewModel.stateObservable.value) {
                             is MovieResultState.LoadingNextPage -> {
                                 setViewWhenLoadingPageState()
                             }
@@ -223,9 +225,9 @@ class MoviesListFragment : Fragment() {
     }
 
     private fun checkShownLastItemsInList(): Boolean =
-        with(rvMoviesList?.layoutManager as GridLayoutManager) {
-            itemCount - findLastCompletelyVisibleItemPosition() <= 2
-        }
+            with(rvMoviesList?.layoutManager as GridLayoutManager) {
+                itemCount - findLastCompletelyVisibleItemPosition() <= 2
+            }
 
     companion object {
         val ARG_POS_NUMBER = "position_number"

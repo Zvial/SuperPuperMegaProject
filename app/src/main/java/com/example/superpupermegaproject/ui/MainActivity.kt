@@ -3,6 +3,7 @@ package com.example.superpupermegaproject.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.superpupermegaproject.App
 import com.example.superpupermegaproject.R
 
 class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
         if (savedInstanceState == null) {
             setFragment(MoviesListFragment.newInstance(), false)
         }
+
+        lifecycle.addObserver(App.getWorkInteractorInstance())
     }
 
     override fun onRestart() {
@@ -24,10 +27,19 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnClickListItem {
         activityIsDestroying = false
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         activityIsDestroying = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+
     }
 
     override fun onClickItem(itemID: Long, position: Int) {

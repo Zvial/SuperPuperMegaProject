@@ -17,14 +17,14 @@ import com.example.superpupermegaproject.R
 import com.example.superpupermegaproject.adapters.ActorsListAdapter
 import com.example.superpupermegaproject.data.Movie
 import com.example.superpupermegaproject.ui.viewmodels.MovieDetailsViewModel
-import com.example.superpupermegaproject.ui.viewmodels.ViewModelFactory
+import com.example.superpupermegaproject.ui.viewmodels.MovieDetailsViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class MovieDetailsFragment : Fragment() {
-    private val viewModel by lazy { ViewModelProvider(this, ViewModelFactory(App.getMoviesInteractorInstance())).get(
+    private val viewModel by lazy { ViewModelProvider(this, MovieDetailsViewModelFactory(App.getMoviesInteractorInstance())).get(
         MovieDetailsViewModel::class.java) }
     private var fragmentScope = CoroutineScope(Dispatchers.Main)
     private var tvBack: TextView? = null
